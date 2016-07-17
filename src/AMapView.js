@@ -27,6 +27,7 @@ class AMapView extends React.Component {
     tiltGesturesEnabled: PropTypes.bool,
     zoomControlsEnabled: PropTypes.bool,
     zoomGesturesEnabled: PropTypes.bool,
+    zoomLevel: PropTypes.number,
     defaultRegion: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,

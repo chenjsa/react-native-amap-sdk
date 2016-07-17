@@ -3,6 +3,10 @@ package com.starlight36.react.amap;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.facebook.react.bridge.ReadableMap;
@@ -10,10 +14,6 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -156,6 +156,11 @@ public class ReactAMapViewManager extends ViewGroupManager<ReactAMapView> {
     @ReactProp(name = "zoomGesturesEnabled")
     public void setZoomGesturesEnabled(ReactAMapView view, boolean enabled) {
         view.getMap().getUiSettings().setZoomGesturesEnabled(enabled);
+    }
+
+    @ReactProp(name = "zoomLevel", defaultFloat = 13)
+    public void setZoomLevel(ReactAMapView view, float zoomLevel) {
+        view.setZoomLevel(zoomLevel);
     }
 
     @ReactProp(name = "defaultRegion")

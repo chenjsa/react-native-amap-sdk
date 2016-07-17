@@ -28,6 +28,7 @@
 @property(nonatomic, assign) BOOL scrollGesturesEnabled;
 @property(nonatomic, assign) BOOL trafficEnabled;
 @property(nonatomic, assign) BOOL zoomGesturesEnabled;
+@property(nonatomic, assign) CGFloat zoomLevel;
 
 @property(nonatomic, assign) MACoordinateRegion defaultRegion;
 @property (nonatomic) MACoordinateRegion region;

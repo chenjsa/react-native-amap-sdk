@@ -30,8 +30,7 @@
 + (AMapGeoPoint *)AMapGeoPoint:(id)json
 {
     json = [self NSDictionary:json];
-    return [AMapGeoPoint locationWithLatitude:
-                    [self CGFloat:json[@"latitude"]]
-                                    longitude:[self CGFloat:json[@"longitude"]]];
+    return [AMapGeoPoint locationWithLatitude:[self CGFloat:json[@"latitude"]]
+									longitude:[self CGFloat:json[@"longitude"]]];
 }
 @end

@@ -9,10 +9,11 @@ import {
     AppRegistry,
     StyleSheet,
     Text,
+    Image,
     View,
     TouchableHighlight,
 } from 'react-native';
-import { AMapView, AMapLocationManager } from 'react-native-amap-sdk';
+import { AMapView, AMapLocationManager, AMapSearchManager } from 'react-native-amap-sdk';
 
 export default class Map extends Component {
     state = {
@@ -21,13 +22,42 @@ export default class Map extends Component {
         longitude: 118.1,
     };
 
+    constructor(props) {
+        super(props);
+        this._requestCurrentLocation = this._requestCurrentLocation.bind(this);
+        this._regeocodeSearch = this._regeocodeSearch.bind(this);
+    }
+
+    _requestCurrentLocation() {
+        // AMapLocationManager.requestCurrentLocation(3, 10, 10)
+        //     .then(location => {
+        //         console.log('requestCurrentLocation', location)
+        //         this.setState({"latitude": location.latitude, "longitude": location.longitude});
+        //         this._regeocodeSearch({"latitude": location.latitude, "longitude": location.longitude});
+        //     })
+        //     .catch(err => console.log(err));
+        AMapLocationManager.startUpdatingLocation(false, location => {
+            console.log('startUpdatingLocation', location);
+            this.setState({"latitude": location.latitude, "longitude": location.longitude});
+            this._regeocodeSearch({"latitude": location.latitude, "longitude": location.longitude});
+        });
+    }
+
+    _regeocodeSearch(location: {}) {
+        console.log(AMapSearchManager);
+        AMapSearchManager.regeocodeSearch(location, 500).then((array)=>{
+            console.log("regeocodeSearch:", array[0]);
+        });
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <AMapView style={styles.container} compassEnabled={true}
-                          defaultRegion={{"latitude": this.state.latitude, "longitude": this.state.longitude, "latitudeDelta": 0.5, "longitudeDelta": 0.5}}
+                          defaultRegion={{"latitude": 41.1, "longitude": 118.1, "latitudeDelta": 0.5, "longitudeDelta": 0.5}}
                           region={{"latitude": this.state.latitude, "longitude": this.state.longitude, "latitudeDelta": 0.5, "longitudeDelta": 0.5}}
-                          myLocationEnabled={true}
+                          myLocationEnabled={true} myLocationType={'locate'} myLocationButtonEnabled={true} scaleControlsEnabled={true}
+                          zoomLevel={16}
                           onMove={(e) => {
                               console.log("Map::onMove", e.nativeEvent ? e.nativeEvent : e);
                           }}
@@ -37,6 +67,8 @@ export default class Map extends Component {
                 >
                     <AMapView.Annotation coordinate={{"latitude": this.state.latitude, "longitude": this.state.longitude}}
                                          title="aaa" subtitle="bbbb" enabled={true} selected={true} canShowCallout={true}
+                                         image={require('./src/images/pin.png')}
+                                         centerOffset={{x: 0, y: -11.5}}
                                          onSelect={e => console.log(e)}>
                         <AMapView.Callout>
                             <View style={{ width: 100, height: 40, backgroundColor: '#ffffff'}}>
@@ -45,19 +77,8 @@ export default class Map extends Component {
                         </AMapView.Callout>
                     </AMapView.Annotation>
                 </AMapView>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                    <TouchableHighlight onPress={() => {
-                        AMapLocationManager.requestCurrentLocation(3, 10, 10)
-                        .then(location => {
-                            console.log('requestCurrentLocation', location)
-                            this.setState({"latitude": location.latitude, "longitude": location.longitude});
-                        })
-                        .catch(err => console.log(err));
-                            {/*AMapLocationManager.startUpdatingLocation(false, location => {*/}
-                              {/*console.log('startUpdatingLocation', location);*/}
-                              {/*this.setState({"latitude": location.latitude, "longitude": location.longitude});*/}
-                            {/*});*/}
-                    }}>
+                <View style={{height: 30, justifyContent: 'center'}}>
+                    <TouchableHighlight onPress={() => this._requestCurrentLocation()}>
                         <Text>动作</Text>
                     </TouchableHighlight>
                 </View>

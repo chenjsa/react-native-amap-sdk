@@ -30,6 +30,7 @@
         _rotateGesturesEnabled = YES;
         _scrollGesturesEnabled = YES;
         _zoomGesturesEnabled = YES;
+		_zoomLevel = 13;
         [AMapServices sharedServices].apiKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AMapApiKey"];
     }
 
@@ -78,6 +79,7 @@
     self.mapView.rotateEnabled = _allGesturesEnabled && _rotateGesturesEnabled;
     self.mapView.scrollEnabled = _allGesturesEnabled && _scrollGesturesEnabled;
     self.mapView.zoomEnabled = _allGesturesEnabled && _zoomGesturesEnabled;
+	self.mapView.zoomLevel = _zoomLevel;
 }
 
 - (void)layoutSubviews
@@ -107,6 +109,8 @@ UPDATE_PROP(BOOL, scrollGesturesEnabled);
 UPDATE_PROP(BOOL, trafficEnabled);
 
 UPDATE_PROP(BOOL, zoomGesturesEnabled);
+
+UPDATE_PROP(CGFloat, zoomLevel);
 
 - (void)setRegion:(MACoordinateRegion)region animated:(BOOL)animated
 {

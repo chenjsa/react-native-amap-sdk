@@ -32,6 +32,7 @@ RCT_EXPORT_VIEW_PROPERTY(rotateGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(scrollGesturesEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(trafficEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(zoomGesturesEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(zoomLevel, CGFloat)
 
 RCT_EXPORT_VIEW_PROPERTY(defaultRegion, MACoordinateRegion)
 RCT_CUSTOM_VIEW_PROPERTY(region, MACoordinateRegion, RCTAMapView)

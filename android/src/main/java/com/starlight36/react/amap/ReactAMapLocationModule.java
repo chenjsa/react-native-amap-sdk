@@ -60,6 +60,7 @@ public class ReactAMapLocationModule extends ReactContextBaseJavaModule implemen
         }
         AMapLocationClientOption option = new AMapLocationClientOption();
         option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        option.setInterval(5000);
         locationClient.setLocationOption(option);
         locationClient.setLocationListener(new AMapLocationListener() {
             private int retryCount = 0;
