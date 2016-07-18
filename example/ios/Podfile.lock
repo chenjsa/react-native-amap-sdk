@@ -10,15 +10,15 @@ PODS:
     - AMap3DMap
     - AMapLocation
     - AMapSearch
-  - React/Core (0.28.0)
-  - React/RCTImage (0.28.0):
+  - React/Core (0.29.2)
+  - React/RCTImage (0.29.2):
     - React/Core
     - React/RCTNetwork
-  - React/RCTNetwork (0.28.0):
+  - React/RCTNetwork (0.29.2):
     - React/Core
-  - React/RCTText (0.28.0):
+  - React/RCTText (0.29.2):
     - React/Core
-  - React/RCTWebSocket (0.28.0):
+  - React/RCTWebSocket (0.29.2):
     - React/Core
 
 DEPENDENCIES:
@@ -41,7 +41,7 @@ SPEC CHECKSUMS:
   AMapLocation: 343abc9ccd971ad27e459f38b5b082eabebf8792
   AMapSearch: cb4722480d2d4331a032d43bd1070ed0fa55dac9
   RCTAMap: 59b6805bf597648005be9e73f62691d0984a138b
-  React: 43544faed4af6a0e8fbc4b3abd26141ed654fa49
+  React: 3da805a4fcb127434843924494de838e9658ca78
 
 PODFILE CHECKSUM: 38007fc1c0771e2c856578b8e46cb4c310ea3c58
 
