@@ -30,6 +30,10 @@ RCT_EXPORT_MODULE();
 	return self;
 }
 
+- (NSArray<NSString *> *)supportedEvents {
+	return @[@"ReceiveAMapSearchResult"];
+}
+
 RCT_EXPORT_METHOD(inputTipsSearch:(NSString *)requestId keys:(NSString *) keys city:(NSString *)city)
 {
     AMapInputTipsSearchRequest *_tipsRequest = [[AMapInputTipsSearchRequest alloc] init];
@@ -63,13 +67,10 @@ RCT_EXPORT_METHOD(regeocodeSearch:(NSString *)requestId location:(AMapGeoPoint *
 -(void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error
 {
 	AMapSearchObject *search = (AMapSearchObject *)request;
-	[self.bridge.eventDispatcher sendAppEventWithName:@"ReceiveAMapSearchResult"
-		body:@{ @"requestId":search.requestId,
-				@"error":@{ @"domain": error.domain,
-							@"userInfo": error.userInfo
-							}
-				}
-	 ];
+	[self sendEventWithName:@"ReceiveAMapSearchResult"
+										 body:@{ @"requestId":search.requestId,
+														 @"error":@{ @"domain": error.domain, @"userInfo": error.userInfo }
+													 }];
 }
 
 -(void)onInputTipsSearchDone:(AMapInputTipsSearchRequest*)request response:(AMapInputTipsSearchResponse *)response
@@ -84,8 +85,8 @@ RCT_EXPORT_METHOD(regeocodeSearch:(NSString *)requestId location:(AMapGeoPoint *
         }
     }
 
-    [self.bridge.eventDispatcher sendAppEventWithName:@"ReceiveAMapSearchResult" body:@{
-                                                                                     @"requestId":request.requestId, @"data":arr}];
+    [self sendEventWithName:@"ReceiveAMapSearchResult"
+											 body:@{@"requestId":request.requestId, @"data":arr}];
 }
 
 -(NSDictionary *)amapTipToJson:(AMapTip *)tip
@@ -120,8 +121,8 @@ RCT_EXPORT_METHOD(regeocodeSearch:(NSString *)requestId location:(AMapGeoPoint *
         }
     }
 
-    [self.bridge.eventDispatcher sendAppEventWithName:@"ReceiveAMapSearchResult" body:@{
-                                                                                        @"requestId":request.requestId, @"data":arr}];
+    [self sendEventWithName:@"ReceiveAMapSearchResult"
+											 body:@{@"requestId":request.requestId, @"data":arr}];
 }
 
 -(void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
@@ -143,9 +144,7 @@ RCT_EXPORT_METHOD(regeocodeSearch:(NSString *)requestId location:(AMapGeoPoint *
 		[arr addObject:n];
 	}
 	
-	[self.bridge.eventDispatcher
-		sendAppEventWithName:@"ReceiveAMapSearchResult"
-		body:@{ @"requestId":request.requestId, @"data":arr}];
+	[self sendEventWithName:@"ReceiveAMapSearchResult" body:@{ @"requestId":request.requestId, @"data":arr}];
 }
 
 @end

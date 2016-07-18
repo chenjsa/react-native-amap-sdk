@@ -118,6 +118,14 @@ public class ReactAMapView extends MapView implements LocationSource, AMapLocati
         }
     }
 
+    public void animateToRegion(LatLngBounds bounds, int duration) {
+        this.getMap().animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0), duration, null);
+    }
+
+    public void animateToCoordinate(LatLng coordinate, int duration) {
+        this.getMap().animateCamera(CameraUpdateFactory.newLatLng(coordinate), duration, null);
+    }
+
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (this.locationChangedListener != null) {

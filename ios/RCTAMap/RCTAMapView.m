@@ -43,7 +43,7 @@
         if (!(self.bounds.size.height > 0 && self.bounds.size.width > 0)) {
             return;
         }
-        _mapView = [[MAMapView alloc] initWithFrame:self.bounds];
+        self.mapView = [[MAMapView alloc] initWithFrame:self.bounds];
         _mapView.delegate = self;
         [self addSubview:_mapView];
         if (_defaultRegion.center.latitude && _defaultRegion.center.longitude) {
@@ -131,9 +131,9 @@ UPDATE_PROP(CGFloat, zoomLevel);
 - (void)insertReactSubview:(id <RCTComponent>)subview atIndex:(NSInteger)atIndex
 {
     if (_mapType) {
-        [self addAMapSubview:subview];
+        [self addAMapSubview:(UIView *)subview];
     }
-    [_reactSubviews insertObject:(UIView *) subview atIndex:(NSUInteger) atIndex];
+    [_reactSubviews insertObject:(UIView *)subview atIndex:(NSUInteger) atIndex];
 }
 
 - (void)removeReactSubview:(id <RCTComponent>)subview

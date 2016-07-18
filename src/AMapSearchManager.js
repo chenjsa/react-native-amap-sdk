@@ -4,14 +4,14 @@
 'use strict';
 
 import {
-    NativeAppEventEmitter,
+    NativeEventEmitter,
     DeviceEventEmitter,
     NativeModules,
     Platform,
 } from 'react-native';
 
 const AMapSearchManager = NativeModules.AMapSearchManager;
-const emitter = Platform.OS == 'ios' ? NativeAppEventEmitter : DeviceEventEmitter;
+const emitter = Platform.OS == 'ios' ? new NativeEventEmitter(AMapSearchManager) : DeviceEventEmitter;
 
 let lastId = "", promiseQueue = {}
 const requestIdGenerator = (type = "AMapSearch")=> {
@@ -28,9 +28,8 @@ const searchRequstFactory = (type) => (...args) => {
         let resolve, reject, promise =  new Promise((res, rej)=> {
                 resolve = res, reject = rej
             }),
-            requestId = requestIdGenerator(type)
-
-        args = [requestId, ...args]
+        requestId = requestIdGenerator(type);
+        args = [requestId, ...args];
 
         AMapSearchManager[type].apply(null, args)
         promiseQueue[requestId] = {resolve, reject}
@@ -41,7 +40,7 @@ const searchRequstFactory = (type) => (...args) => {
 emitter.addListener(
     'ReceiveAMapSearchResult',
     (reminder) => {
-        let {data, error, requestId} = reminder
+        let {data, error, requestId} = reminder;
         if(requestId && promiseQueue[requestId]) {
             let promise = promiseQueue[requestId];
             if (error) {

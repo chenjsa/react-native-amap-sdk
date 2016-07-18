@@ -59,7 +59,7 @@
         self.calloutView = (RCTAMapCalloutView *) subview;
         self.canShowCallout = NO;
     } else {
-        [super insertReactSubview:subview atIndex:atIndex];
+        [super insertReactSubview:(UIView *)subview atIndex:atIndex];
     }
 }
 
@@ -68,7 +68,7 @@
     if ([subview isKindOfClass:[RCTAMapCalloutView class]] && self.calloutView == subview) {
         self.calloutView = nil;
     } else {
-        [super removeReactSubview:subview];
+        [super removeReactSubview:(UIView *)subview];
     }
 }
 

@@ -3,9 +3,10 @@
 // Copyright (c) 2016 starlight36. All rights reserved.
 //
 
-#import <React/RCTBridgeModule.h>
+#import <RCTBridgeModule.h>
+#import "RCTEventEmitter.h"
 #import <AMapSearchKit/AMapSearchKit.h>
 
-@interface RCTAMapSearchManager : NSObject <RCTBridgeModule, AMapSearchDelegate>
+@interface RCTAMapSearchManager : RCTEventEmitter <RCTBridgeModule, AMapSearchDelegate>
 
 @end

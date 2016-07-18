@@ -9,6 +9,9 @@ import java.util.Map;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -20,6 +23,11 @@ import javax.annotation.Nullable;
 public class ReactAMapViewManager extends ViewGroupManager<ReactAMapView> {
 
     private static final String REACT_CLASS = "RCTAMapView";
+
+    public static final int ANIMATE_TO_REGION = 1;
+    public static final int ANIMATE_TO_COORDINATE = 2;
+    public static final int FIT_TO_ELEMENTS = 3;
+    public static final int ANIMATE_TO_ZOOM_LEVEL = 4;
 
     private List<ReactAMapView> listeners = new ArrayList<>();
     private Bundle savedInstanceState;
@@ -199,6 +207,49 @@ public class ReactAMapViewManager extends ViewGroupManager<ReactAMapView> {
     @Override
     public void removeViewAt(ReactAMapView parent, int index) {
         parent.removeFeatureAt(index);
+    }
+
+    @Override
+    public void receiveCommand(ReactAMapView view, int commandId, @Nullable ReadableArray args) {
+        Integer duration;
+        Double lat;
+        Double lng;
+        Double lngDelta;
+        Double latDelta;
+        ReadableMap region;
+        Double zoomLevel;
+
+        switch (commandId) {
+            case ANIMATE_TO_REGION:
+                region = args.getMap(0);
+                duration = args.getInt(1);
+                lng = region.getDouble("longitude");
+                lat = region.getDouble("latitude");
+                lngDelta = region.hasKey("longitudeDelta") ? region.getDouble("longitudeDelta") : 0.0;
+                latDelta = region.hasKey("latitudeDelta") ? region.getDouble("latitudeDelta") : 0.0;
+                LatLngBounds bounds = new LatLngBounds(
+                        new LatLng(lat - latDelta / 2, lng - lngDelta / 2), // southwest
+                        new LatLng(lat + latDelta / 2, lng + lngDelta / 2)  // northeast
+                );
+                view.animateToRegion(bounds, duration);
+                break;
+
+            case ANIMATE_TO_COORDINATE:
+                region = args.getMap(0);
+                duration = args.getInt(1);
+                lng = region.getDouble("longitude");
+                lat = region.getDouble("latitude");
+                view.animateToCoordinate(new LatLng(lat, lng), duration);
+                break;
+        }
+    }
+
+    @Override
+    @Nullable
+    public Map<String, Integer> getCommandsMap() {
+        return MapBuilder.of(
+                "animateToRegion", ANIMATE_TO_REGION
+        );
     }
 
     @Nullable
