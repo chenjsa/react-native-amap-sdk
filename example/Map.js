@@ -29,18 +29,19 @@ export default class Map extends Component {
     }
 
     _requestCurrentLocation() {
-        // AMapLocationManager.requestCurrentLocation(3, 10, 10)
-        //     .then(location => {
-        //         console.log('requestCurrentLocation', location)
-        //         this.setState({"latitude": location.latitude, "longitude": location.longitude});
-        //         this._regeocodeSearch({"latitude": location.latitude, "longitude": location.longitude});
-        //     })
-        //     .catch(err => console.log(err));
-        AMapLocationManager.startUpdatingLocation(false, location => {
-            console.log('startUpdatingLocation', location);
-            this.setState({"latitude": location.latitude, "longitude": location.longitude});
-            this._regeocodeSearch({"latitude": location.latitude, "longitude": location.longitude});
-        });
+        AMapLocationManager.requestCurrentLocation(3, 10, 10)
+            .then(location => {
+                console.log('requestCurrentLocation', location);
+                this.refs["amapView"].animateToRegion({"latitude": location.latitude, "longitude": location.longitude, "latitudeDelta": 0.05, "longitudeDelta": 0.05}, 500);
+                // this.setState({"latitude": location.latitude, "longitude": location.longitude});
+                this._regeocodeSearch({"latitude": location.latitude, "longitude": location.longitude});
+            })
+            .catch(err => console.log(err));
+        // AMapLocationManager.startUpdatingLocation(false, location => {
+        //     console.log('startUpdatingLocation', location);
+        //     // this.setState({"latitude": location.latitude, "longitude": location.longitude});
+        //     this._regeocodeSearch({"latitude": location.latitude, "longitude": location.longitude});
+        // });
     }
 
     _regeocodeSearch(location: {}) {
@@ -53,7 +54,8 @@ export default class Map extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <AMapView style={styles.container} compassEnabled={true}
+                <AMapView ref="amapView"
+                          style={styles.container} compassEnabled={true}
                           defaultRegion={{"latitude": 41.1, "longitude": 118.1, "latitudeDelta": 0.5, "longitudeDelta": 0.5}}
                           region={{"latitude": this.state.latitude, "longitude": this.state.longitude, "latitudeDelta": 0.5, "longitudeDelta": 0.5}}
                           myLocationEnabled={true} myLocationType={'locate'} myLocationButtonEnabled={true} scaleControlsEnabled={true}
